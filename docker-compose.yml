@@ -9,6 +9,8 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - cookit-network
 
   redis:
     image: redis:latest
@@ -16,10 +18,14 @@ services:
       - "6379:6379" 
     volumes:
       - redis_data:/data
+    networks:
+      - cookit-network
 
   cookit:
     build:
       context: .
+    ports:
+      - "3333:3333"
     environment:
       DB_HOST: postgres
       DB_PORT: 5432

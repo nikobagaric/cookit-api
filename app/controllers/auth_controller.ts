@@ -3,6 +3,14 @@ import User from '#models/user'
 import { registerValidator, loginValidator } from '#validators/auth'
 
 export default class AuthController {
+  /**
+   * @login
+   * @operationId loginUser
+   * @description Logs in the user with email and password, returning an access token on success
+   * @responseBody 200 - {"token": "xxxxx"} - Successful login, returns a token
+   * @responseBody 401 - {"error": "Invalid credentials"} - Login failed due to invalid credentials
+   * @requestBody {"email": "x@x.x", "password": "x"}
+   */
   async login({ request, response }: HttpContext) {
     const { email, password } = await request.validateUsing(loginValidator)
 
@@ -14,6 +22,15 @@ export default class AuthController {
       ...user.serialize(),
     })
   }
+
+  /**
+   * @register
+   * @operationId registerUser
+   * @description Registers a new user by providing email, password, and username
+   * @responseBody 201 - <User> - User created successfully
+   * @responseBody 400 - {"error": "Validation failed"} - Validation error
+   * @requestBody {"email": "x@x.x", "password": "x", "username": "x"}
+   */
   async register({ request, response }: HttpContext) {
     const payload = await request.validateUsing(registerValidator)
 
@@ -21,6 +38,14 @@ export default class AuthController {
 
     return response.created(user)
   }
+
+  /**
+   * @logout
+   * @operationId logoutUser
+   * @description Logs out the user by invalidating the access token
+   * @responseBody 200 - {"message": "Logged out"} - Successful logout
+   * @responseBody 404 - {"error": "Token not found"} - Token not found or invalid
+   */
   async logout({ auth, response }: HttpContext) {
     const user = auth.getUserOrFail()
     const token = auth.user?.currentAccessToken.identifier
