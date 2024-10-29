@@ -11,7 +11,7 @@ export default class AuthController {
    * @responseBody 401 - {"error": "Invalid credentials"} - Login failed due to invalid credentials
    * @requestBody {"email": "x@x.x", "password": "x"}
    */
-  async login({ request, response }: HttpContext) {
+  async login({ request, response }: HttpContext): Promise<void> {
     const { email, password } = await request.validateUsing(loginValidator)
 
     const user = await User.verifyCredentials(email, password)
@@ -31,7 +31,7 @@ export default class AuthController {
    * @responseBody 400 - {"error": "Validation failed"} - Validation error
    * @requestBody {"email": "x@x.x", "password": "x", "username": "x"}
    */
-  async register({ request, response }: HttpContext) {
+  async register({ request, response }: HttpContext): Promise<void> {
     const payload = await request.validateUsing(registerValidator)
 
     const user = await User.create(payload)
@@ -46,7 +46,7 @@ export default class AuthController {
    * @responseBody 200 - {"message": "Logged out"} - Successful logout
    * @responseBody 404 - {"error": "Token not found"} - Token not found or invalid
    */
-  async logout({ auth, response }: HttpContext) {
+  async logout({ auth, response }: HttpContext): Promise<void> {
     const user = auth.getUserOrFail()
     const token = auth.user?.currentAccessToken.identifier
 

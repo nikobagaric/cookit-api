@@ -37,10 +37,17 @@ services:
     depends_on:
       - postgres
       - redis
+    volumes:
+      # images for specific use in app, if need be
+      - dev_static_data:/vol/web
+      # recipe img
+      - cookit_images:/app/uploads/recipes
     networks:
       - cookit-network
 
 volumes:
+  dev_static_data:
+  cookit_images: 
   postgres_data:
   redis_data:
 

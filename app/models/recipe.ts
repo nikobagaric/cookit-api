@@ -7,15 +7,18 @@ export default class Recipe extends BaseModel {
 
   @column()
   declare title: string
-
+  
   @column()
   declare description: string
 
   @column()
-  declare ingredients: string
+  declare difficulty: number
+  
+  @column()
+  declare image_url: string
 
   @column()
-  declare steps: string
+  declare ingredients: string // can be another model
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
