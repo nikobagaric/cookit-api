@@ -48,6 +48,7 @@ export default class AuthController {
    */
   async logout({ auth, response }: HttpContext): Promise<void> {
     const user = auth.getUserOrFail()
+    
     const token = auth.user?.currentAccessToken.identifier
 
     if (!token) {
@@ -57,5 +58,22 @@ export default class AuthController {
     await User.accessTokens.delete(user, token)
 
     return response.ok({ message: 'Logged out' })
+  }
+
+  /**
+   * @me
+   * @operationId meUser
+   * @description gets the current auth user
+   * @responseBody 200
+   * @responseBody 404
+   */
+  async me({ auth, response }: HttpContext): Promise<void> {
+    const user = auth.getUserOrFail()
+
+    return response.ok(
+      {
+        user: user
+      }
+    )
   }
 }

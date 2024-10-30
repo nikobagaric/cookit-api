@@ -101,6 +101,7 @@ export default class RecipesController {
   }
 
   /**
+   * @destroy
    * @operationId destroyRecipe
    * @responseBody 204
    * @responseBody 404
