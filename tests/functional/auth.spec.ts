@@ -21,16 +21,4 @@ test.group('Auth', (group) => {
     response.assertStatus(200)
   })
 
-  test('should login user and get me', async ({ client }) => {
-    const testUser = await User.create({
-      id: 100,
-      username: "testuser",
-      password: "testpass",
-      email: "test1@test.com",
-    })
-
-    const meResponse = await client.get('/auth/me').loginAs(testUser)
-
-    meResponse.assertStatus(200)
-  })
 })

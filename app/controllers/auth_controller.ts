@@ -69,7 +69,7 @@ export default class AuthController {
    */
   async me({ auth, response }: HttpContext): Promise<void> {
     const user = auth.getUserOrFail()
-
+    
     return response.ok(
       {
         user: user

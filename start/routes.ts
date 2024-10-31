@@ -12,6 +12,7 @@ const UsersController = () => import('#controllers/users_controller')
 const RecipesController = () => import('#controllers/recipes_controller')
 
 import router from '@adonisjs/core/services/router'
+import { middleware } from './kernel.js';
 
 // Auto-swagger import:
 import AutoSwagger from "adonis-autoswagger";
@@ -30,8 +31,8 @@ router.get("/docs", async () => {
 router.group(() => {
   router.post('/register', [AuthController, 'register'])
   router.post('/login', [AuthController, 'login'])
-  router.post('/logout', [AuthController, 'logout'])
-  router.get('/me', [AuthController, 'me'])
+  router.post('/logout', [AuthController, 'logout']).use(middleware.auth())
+  router.get('/me', [AuthController, 'me']).as('auth.me')
 }).prefix('auth')
 
 
