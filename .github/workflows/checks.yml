@@ -35,6 +35,10 @@ jobs:
         run: docker-compose up -d
 
       - name: Run Tests
+        env:
+          APP_KEY: ${{ secrets.APP_KEY }}
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
         run: docker-compose run --rm cookit sh -c "node ace test"
 
       - name: Shut Down Services
