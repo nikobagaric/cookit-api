@@ -13,6 +13,8 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USER }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
+    - name: Install deps
+      run: npm i
     - name: Test
       run: docker-compose run --rm cookit sh -c "node ace test"
