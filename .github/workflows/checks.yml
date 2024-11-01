@@ -10,10 +10,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    env:
-        APP_KEY: ${{ secrets.APP_KEY }}
-        GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-        GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
     steps:
 
       - name: Check out code
@@ -39,7 +35,11 @@ jobs:
         run: docker-compose build
 
       - name: Run Tests
-        run: docker-compose run --rm cookit sh -c "node ace test"
+        env:
+          APP_KEY: ${{ secrets.APP_KEY }}
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+        run: docker-compose run --rm -e APP_KEY -e GOOGLE_CLIENT_ID -e GOOGLE_CLIENT_SECRET cookit sh -c "node ace test"
 
       - name: Shut Down Services
         run: docker-compose down
