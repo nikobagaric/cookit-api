@@ -27,8 +27,17 @@ services:
     ports:
       - "3333:3333"
     environment:
-      - .env
-      - .env.example
+      LOG_LEVEL: info
+      HOST: 0.0.0.0
+
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_DATABASE: cookit_db
+
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
     depends_on:
       - postgres
       - redis
