@@ -13,13 +13,13 @@ type ActivityLogsData = {
 export default class ActivityLogsController {
 
   public async index({ response }: HttpContext) {
-    const activityLogs = await ActivityLog.query().preload('userId')
+    const activityLogs = await ActivityLog.query().preload('user')
     return response.status(200).json(activityLogs)
   }
 
   public async show({ response, params }: HttpContext) {
     const activityLog = await ActivityLog.findOrFail(params.id)
-    await activityLog.load('userId')
+    await activityLog.load('user')
     return response.status(200).json(activityLog)
   }
 
