@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 
-export default class PeriodicStat extends BaseModel {
+export default class RecipeFavorite extends BaseModel {
   @column({ isPrimary: true })
   declare id: number
 

@@ -11,9 +11,18 @@ export default class Recipe extends BaseModel {
   @column()
   declare description: string
 
+  @column() // enum
+  declare cuisine: string 
+
+  @column() // enum
+  declare type: string
+
   @column()
   declare difficulty: number
   
+  @column()
+  declare cooking_time: number
+
   @column()
   declare image_url: string
 

@@ -10,6 +10,7 @@
 const AuthController = () => import('#controllers/auth_controller')
 const UsersController = () => import('#controllers/users_controller')
 const RecipesController = () => import('#controllers/recipes_controller')
+const ActivityLogsController = () => import('#controllers/activity_logs_controller')
 
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js';
@@ -27,6 +28,7 @@ router.get("/docs", async () => {
   return AutoSwagger.default.ui("/swagger", swagger)
 })
 
+// bad naming scheme?
 
 router.group(() => {
   router.post('/register', [AuthController, 'register'])
@@ -52,6 +54,14 @@ router.group(() => {
   router.delete('/recipe/:id', [RecipesController, 'destroy'])
 }).prefix('recipes')
 
+router.group(() => {
+  router.get('/activity_log', [ActivityLogsController, 'index'])
+  router.get('/activity_log/:id', [ActivityLogsController, 'show'])
+  router.post('/activity_log', [ActivityLogsController, 'store'])
+  router.put('/activity_log/:id', [ActivityLogsController, 'update'])
+  router.delete('/activity_log/:id', [ActivityLogsController, 'destroy'])
+}).prefix('activity_logs')
+
 router.get('/', async () => {
-  return { welcome: "cookit api indev, go to /swagger or /docs"}
+  return { welcome: "cookit api v.indev, go to /swagger or /docs"}
 })

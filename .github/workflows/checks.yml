@@ -34,6 +34,9 @@ jobs:
       - name: Build and Start Services
         run: docker-compose build
 
+      - name: Migrate Database
+        run: docker-compose run --rm cookit sh -c "node ace migration:run"
+
       - name: Run Tests
         env:
           APP_KEY: ${{ secrets.APP_KEY }}

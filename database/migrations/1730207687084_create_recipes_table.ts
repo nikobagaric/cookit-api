@@ -9,8 +9,11 @@ export default class extends BaseSchema {
       table.string('title').notNullable()
       table.text('description').notNullable()
       table.integer('difficulty').unsigned().notNullable()
-      table.string('image_url')
       table.text('ingredients').notNullable()
+      table.string('type').notNullable()
+      table.string('cuisine').notNullable()
+      table.float('cooking_time').notNullable()
+      table.string('image_url')
 
       table.timestamp('created_at', { useTz: true }).defaultTo(this.now())
       table.timestamp('updated_at', { useTz: true }).defaultTo(this.now())

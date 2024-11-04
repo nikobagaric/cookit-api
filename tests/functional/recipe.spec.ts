@@ -3,15 +3,18 @@ import Recipe from '#models/recipe'
 import mock from 'mock-fs'
 import { faker } from '@faker-js/faker'
 
+import fs from 'fs'
+import path from 'path'
+
+const sampleImage = fs.readFileSync(path.resolve('./tests/functional/image/sample-image.jpg'))
+
 test.group('RecipesController', (group) => {
   let recipeId: number
 
   group.setup(async () => {
     mock({
       'fake-dir': {
-        'valid-image.jpg': Buffer.from(
-          faker.image.urlPlaceholder()
-        ),
+        'valid-image.jpg': sampleImage,
         'invalid-text.txt': faker.lorem.paragraph(),
       },
     })
@@ -23,6 +26,9 @@ test.group('RecipesController', (group) => {
       description: 'A test recipe description',
       difficulty: 3,
       ingredients: 'test ingredient 1, test ingredient 2',
+      type: 'dinner',
+      cuisine: 'croatian',
+      cooking_time: 45.5
     })
     recipeId = recipe.id
   })
@@ -48,9 +54,12 @@ test.group('RecipesController', (group) => {
   test('should create a new recipe', async ({ client, assert }) => {
     const response = await client.post('/recipes/recipe').form({
       title: 'New Recipe',
-      description: 'A new recipe description',
-      difficulty: 2,
-      ingredients: 'ingredient 1, ingredient 2',
+      description: 'A test recipe description',
+      difficulty: 3,
+      ingredients: 'test ingredient 1, test ingredient 2',
+      type: 'dinner',
+      cuisine: 'croatian',
+      cooking_time: 45.5
     })
     response.assertStatus(201)
     assert.equal(response.body().title, 'New Recipe')
@@ -76,6 +85,14 @@ test.group('RecipesController', (group) => {
     })
     response.assertStatus(200)
     assert.equal(response.body().title, 'Updated Recipe')
+  })
+
+  test('should update an existing recipe with image', async ({ client }) => {
+    const response = await client
+      .put(`/recipes/recipe/${recipeId}`)
+      .file('image', 'fake-dir/valid-image.jpg')
+
+    response.assertStatus(200)
   })
 
   test('should return 404 for updating a non-existing recipe', async ({ client }) => {
