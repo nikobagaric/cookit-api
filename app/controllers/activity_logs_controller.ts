@@ -37,8 +37,8 @@ export default class ActivityLogsController {
   /**
    * @store
    * @operationId storeActivityLog
-   * @responseBody 201
-   * @responseBody 422
+   * @responseBody 201 - Sucessfuly stored object
+   * @responseBody 400 - Invalid image
    * @requestBody <ActivityLog>
    */
   public async store({ request, response }: HttpContext) {
@@ -67,8 +67,8 @@ export default class ActivityLogsController {
    * @update
    * @operationId updateActivityLog
    * @paramPath id - Describe the path param - @type(number) @required
-   * @responseBody 200
-   * @responseBody 422
+   * @responseBody 200 - Sucessfuly updated object
+   * @responseBody 404 - Object not found
    * @requestBody <ActivityLog>
    */
   public async update({ request, response, params }: HttpContext) {
@@ -100,8 +100,8 @@ export default class ActivityLogsController {
    * @destroy
    * @operationId destroyActivityLog
    * @paramPath id - Describe the param path - @type(number) @required
-   * @responseBody 204
-   * @responseBody 404
+   * @responseBody 204 - Destroyed object
+   * @responseBody 404 - Object not found
    */
   public async destroy({ response, params }: HttpContext) {
     const activityLog = await ActivityLog.findOrFail(params.id)
