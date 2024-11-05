@@ -8,10 +8,10 @@ type RecipeData = {
   description: string
   difficulty: number
   ingredients: string
-  image_url?: string
+  imageUrl?: string
   type: string
   cuisine: string
-  cooking_time: number
+  cookingTime: number
 }
 
 export default class RecipesController {
@@ -33,7 +33,7 @@ export default class RecipesController {
       'difficulty',
       'ingredients',
       'type',
-      'cooking_time',
+      'cookingTime',
       'cuisine',
     ])
     const image = request.file('image', {
@@ -49,7 +49,7 @@ export default class RecipesController {
       const fileName = `${uuid()}.${image.extname}`
       await image.move(app.tmpPath('uploads/recipes'), { name: fileName })
 
-      data.image_url = `uploads/recipes/${fileName}`
+      data.imageUrl = `uploads/recipes/${fileName}`
     }
 
     const recipe = await Recipe.create(data)
@@ -64,7 +64,7 @@ export default class RecipesController {
       'difficulty',
       'ingredients',
       'type',
-      'cooking_time',
+      'cookingTime',
       'cuisine',
     ])
 
@@ -81,7 +81,7 @@ export default class RecipesController {
       const fileName = `${uuid()}.${image.extname}`
       await image.move(app.tmpPath('uploads/recipes'), { name: fileName })
 
-      data.image_url = `uploads/recipes/${fileName}`
+      data.imageUrl = `uploads/recipes/${fileName}`
     }
 
     recipe.merge(data)

@@ -20,11 +20,11 @@ export default class Recipe extends BaseModel {
   @column()
   declare difficulty: number
   
-  @column()
-  declare cooking_time: number
+  @column({ columnName: 'cooking_time' })
+  declare cookingTime: number
 
-  @column()
-  declare image_url: string
+  @column({ columnName: 'image_url' })
+  declare imageUrl: string | null
 
   @column()
   declare ingredients: string // can be another model

@@ -7,7 +7,7 @@ import app from '@adonisjs/core/services/app'
 type ActivityLogsData = {
     userId: number,
     action: string,
-    image_url?: string,
+    imageUrl?: string,
 }
 
 export default class ActivityLogsController {
@@ -38,7 +38,7 @@ export default class ActivityLogsController {
 
       const fileName = `${uuid()}.${image.extname}`
       await image.move(app.tmpPath('uploads/activity_logs'), { name: fileName })
-      data.image_url = `uploads/activity_logs/${fileName}`
+      data.imageUrl = `uploads/activity_logs/${fileName}`
     }
 
     const activityLog = await ActivityLog.create(data)
@@ -61,7 +61,7 @@ export default class ActivityLogsController {
 
       const fileName = `${uuid()}.${image.extname}`
       await image.move(app.tmpPath('uploads/activity_logs'), { name: fileName })
-      data.image_url = `uploads/activity_logs/${fileName}`
+      data.imageUrl = `uploads/activity_logs/${fileName}`
     }
 
     activityLog.merge(data)

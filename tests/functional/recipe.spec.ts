@@ -20,6 +20,10 @@ test.group('RecipesController', (group) => {
     })
   })
 
+  group.teardown(() => {
+    mock.restore()
+  })
+
   group.each.setup(async () => {
     const recipe = await Recipe.create({
       title: 'Test Recipe',
@@ -28,7 +32,7 @@ test.group('RecipesController', (group) => {
       ingredients: 'test ingredient 1, test ingredient 2',
       type: 'dinner',
       cuisine: 'croatian',
-      cooking_time: 45.5
+      cookingTime: 45.5
     })
     recipeId = recipe.id
   })
@@ -59,7 +63,7 @@ test.group('RecipesController', (group) => {
       ingredients: 'test ingredient 1, test ingredient 2',
       type: 'dinner',
       cuisine: 'croatian',
-      cooking_time: 45.5
+      cookingTime: 45.5
     })
     response.assertStatus(201)
     assert.equal(response.body().title, 'New Recipe')

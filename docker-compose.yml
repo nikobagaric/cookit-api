@@ -48,8 +48,9 @@ services:
     volumes:
       # images for specific use in app, if need be
       - dev_static_data:/vol/web
-      # recipe img
+      # img for models
       - cookit_images:/app/uploads/recipes
+      - cookit_images:/app/uploads/activity_logs
     networks:
       - cookit-network
 

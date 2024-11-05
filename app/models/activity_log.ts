@@ -7,14 +7,14 @@ export default class ActivityLog extends BaseModel {
   @column({ isPrimary: true })
   declare id: number
 
-  @column()
+  @column({ columnName: 'user_id' })
   declare userId: number
 
   @column()
   declare action: string // enum, depending on value return a desc, e.g. "Userx has made this!"
   
-  @column()
-  declare image_url: string
+  @column({ columnName: 'image_url' })
+  declare imageUrl: string | null
   
   @belongsTo(() => User, {
     foreignKey: 'userId'
