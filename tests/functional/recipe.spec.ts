@@ -1,7 +1,5 @@
 import { test } from '@japa/runner'
 import Recipe from '#models/recipe'
-import mock from 'mock-fs'
-import { faker } from '@faker-js/faker'
 
 import fs from 'fs'
 import path from 'path'
@@ -10,19 +8,6 @@ const sampleImage = fs.readFileSync(path.resolve('./tests/functional/image/sampl
 
 test.group('RecipesController', (group) => {
   let recipeId: number
-
-  group.setup(async () => {
-    mock({
-      'fake-dir': {
-        'valid-image.jpg': sampleImage,
-        'invalid-text.txt': faker.lorem.paragraph(),
-      },
-    })
-  })
-
-  group.teardown(() => {
-    mock.restore()
-  })
 
   group.each.setup(async () => {
     const recipe = await Recipe.create({
@@ -76,7 +61,11 @@ test.group('RecipesController', (group) => {
       .field('description', 'Description with invalid image')
       .field('difficulty', 2)
       .field('ingredients', 'ingredient 1')
-      .file('image', 'fake-dir/invalid-text.txt') // Test invalid file
+      .field('cuisine', 'croatian')
+      .field('type', 'dinner')
+      .field('cookingTime', 100)
+      .file('image', './tests/functional/image/sample.txt') // Test invalid file
+
     response.assertStatus(400)
     response.assertBodyContains({ error: 'invalid image file' })
   })
@@ -94,7 +83,7 @@ test.group('RecipesController', (group) => {
   test('should update an existing recipe with image', async ({ client }) => {
     const response = await client
       .put(`/recipes/recipe/${recipeId}`)
-      .file('image', 'fake-dir/valid-image.jpg')
+      .file('image', sampleImage)
 
     response.assertStatus(200)
   })

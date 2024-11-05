@@ -36,8 +36,10 @@ export default class RecipesController {
       'cookingTime',
       'cuisine',
     ])
+    const validExtnames = ['jpg', 'jpeg', 'png']
+
     const image = request.file('image', {
-      extnames: ['jpg', 'jpeg', 'png'],
+      extnames: validExtnames,
       size: '3mb',
     })
 

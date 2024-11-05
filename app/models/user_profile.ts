@@ -10,6 +10,8 @@ export default class UserProfile extends BaseModel {
   @column({ columnName: 'user_id' })
   declare userId: number
 
+  @column({})
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 

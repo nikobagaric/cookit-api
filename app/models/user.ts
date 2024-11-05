@@ -1,3 +1,10 @@
+/**
+ * User model
+ *
+ * Serves primarily as an authentication model,
+ * whereas user_profile serves as a "user detail" model
+ */
+
 import { DateTime } from 'luxon'
 import hash from '@adonisjs/core/services/hash'
 import { compose } from '@adonisjs/core/helpers'
@@ -42,7 +49,7 @@ export default class User extends compose(BaseModel, AuthFinder) {
 
   @hasMany(() => ActivityLog, {
     localKey: 'id',
-    foreignKey: 'userId'
+    foreignKey: 'userId',
   })
   declare activityLogs: HasMany<typeof ActivityLog>
 

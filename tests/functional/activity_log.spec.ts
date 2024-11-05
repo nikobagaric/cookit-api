@@ -1,10 +1,9 @@
 import { test } from '@japa/runner'
 import ActivityLog from '#models/activity_log'
 import User from '#models/user'
-// import mock from 'mock-fs'
-// import { faker } from '@faker-js/faker'
-// import fs from 'fs'
-// import path from 'path'
+
+import fs from 'fs'
+import path from 'path'
 
 
 test.group('ActivityLogsController', (group) => {
@@ -66,11 +65,9 @@ test.group('ActivityLogsController', (group) => {
       userId: userId,
       action: 'User followed someone',
     })
-    console.log(activityLog)
     const response = await client.put(`/activity_logs/activity_log/${activityLog.id}`).form({
       action: 'User followed another user',
     })
-    console.log(response)
     response.assertStatus(200)
     assert.equal(response.body().action, 'User followed another user')
   })
