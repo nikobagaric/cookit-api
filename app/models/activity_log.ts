@@ -11,7 +11,7 @@ export default class ActivityLog extends BaseModel {
   declare userId: number
 
   @column()
-  declare action: string // enum, depending on value return a desc, e.g. "Userx has made this!"
+  declare action: string
   
   @column({ columnName: 'image_url' })
   declare imageUrl: string | null
@@ -19,6 +19,7 @@ export default class ActivityLog extends BaseModel {
   @belongsTo(() => User, {
     foreignKey: 'userId'
   })
+  // @no-swagger
   declare user: BelongsTo<typeof User>
 
   @column.dateTime({ autoCreate: true })
