@@ -11,6 +11,7 @@ const AuthController = () => import('#controllers/auth_controller')
 const UsersController = () => import('#controllers/users_controller')
 const RecipesController = () => import('#controllers/recipes_controller')
 const ActivityLogsController = () => import('#controllers/activity_logs_controller')
+const UserProfilesController = () => import('#controllers/user_profiles_controller')
 
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js';
@@ -34,7 +35,7 @@ router.group(() => {
   router.post('/register', [AuthController, 'register'])
   router.post('/login', [AuthController, 'login'])
   router.post('/logout', [AuthController, 'logout']).use(middleware.auth())
-  router.get('/me', [AuthController, 'me']).as('auth.me')
+  router.get('/me', [AuthController, 'me']).use(middleware.auth())
 }).prefix('auth')
 
 
@@ -61,6 +62,14 @@ router.group(() => {
   router.put('/activity_log/:id', [ActivityLogsController, 'update'])
   router.delete('/activity_log/:id', [ActivityLogsController, 'destroy'])
 }).prefix('activity_logs')
+
+router.group(() => {
+  router.get('/user_profile', [UserProfilesController, 'index'])
+  router.get('/user_profile/:id', [UserProfilesController, 'show'])
+  router.post('/user_profile', [UserProfilesController, 'store'])
+  router.put('/user_profile/:id', [UserProfilesController, 'update'])
+  router.delete('/user_profile/:id', [UserProfilesController, 'destroy'])
+}).prefix('user_profiles')
 
 router.get('/', async () => {
   return { welcome: "cookit api v.indev, go to /swagger or /docs"}

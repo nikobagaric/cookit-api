@@ -15,6 +15,7 @@ export default class AuthController {
     const { email, password } = await request.validateUsing(loginValidator)
 
     const user = await User.verifyCredentials(email, password)
+
     const token = await User.accessTokens.create(user)
 
     return response.ok({
@@ -47,8 +48,7 @@ export default class AuthController {
    * @responseBody 404 - {"error": "Token not found"} - Token not found or invalid
    */
   async logout({ auth, response }: HttpContext): Promise<void> {
-    const user = auth.getUserOrFail()
-    
+    const user = await auth.authenticate()
     const token = auth.user?.currentAccessToken.identifier
 
     if (!token) {
@@ -60,9 +60,15 @@ export default class AuthController {
     return response.ok({ message: 'Logged out' })
   }
 
-  
+  /**
+   * @me
+   * @operationId meUser
+   * @description Gets current auth user
+   * @responseBody 200 - {"user": "user"} - Auth user found
+   * @responseBody 401 - Unauthorized access
+   */
   async me({ auth, response }: HttpContext): Promise<void> {
-    const user = auth.getUserOrFail()
+    const user = await auth.authenticate()
     
     return response.ok(
       {

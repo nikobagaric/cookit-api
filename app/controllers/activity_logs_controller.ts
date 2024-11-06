@@ -1,8 +1,8 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import ActivityLog from '#models/activity_log'
-import User from '#models/user'
 import { v4 as uuid } from 'uuid'
 import app from '@adonisjs/core/services/app'
+//import User from '#models/user'
 
 type ActivityLogsData = {
     userId: number,

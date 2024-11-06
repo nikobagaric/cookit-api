@@ -8,12 +8,13 @@
 import { DateTime } from 'luxon'
 import hash from '@adonisjs/core/services/hash'
 import { compose } from '@adonisjs/core/helpers'
-import { BaseModel, column, hasMany, hasOne } from '@adonisjs/lucid/orm'
+import { BaseModel, column, hasMany, hasOne, manyToMany } from '@adonisjs/lucid/orm'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
 import { DbAccessTokensProvider } from '@adonisjs/auth/access_tokens'
-import type { HasMany, HasOne } from '@adonisjs/lucid/types/relations'
+import type { HasMany, HasOne, ManyToMany } from '@adonisjs/lucid/types/relations'
 import UserProfile from './user_profile.js'
 import ActivityLog from './activity_log.js'
+import Recipe from './recipe.js'
 
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   uids: ['email'],
@@ -30,6 +31,8 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column()
   declare email: string
 
+  // move points to user profile?
+
   @column()
   declare points: number | null
 
@@ -41,17 +44,22 @@ export default class User extends compose(BaseModel, AuthFinder) {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
+  
+  // move relations to user profile?
 
   @hasOne(() => UserProfile, {
     foreignKey: 'userId',
   })
   declare profile: HasOne<typeof UserProfile>
 
-  @hasMany(() => ActivityLog, {
-    localKey: 'id',
-    foreignKey: 'userId',
-  })
+  @hasMany(() => ActivityLog)
   declare activityLogs: HasMany<typeof ActivityLog>
+
+  @manyToMany(() => Recipe, {
+    pivotTable: 'favorite_recipes',
+    pivotTimestamps: true
+  })
+  declare favoriteRecipes: ManyToMany<typeof Recipe>
 
   static accessTokens = DbAccessTokensProvider.forModel(User)
 }
