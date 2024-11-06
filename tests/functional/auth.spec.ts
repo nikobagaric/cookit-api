@@ -1,12 +1,7 @@
 import { test } from '@japa/runner'
 import User from '#models/user'
-import mock from 'mock-fs'
 
-test.group('Auth', (group) => {
-
-  group.teardown(() => {
-    mock.restore()
-  })
+test.group('Auth', () => {
 
   test('should register a user', async ({ client }) => {
     const response = await client.post('/auth/register').form({
@@ -23,6 +18,28 @@ test.group('Auth', (group) => {
       email: 'test@test.com',
       password: 'password',
     })
+
+    response.assertStatus(200)
+  })
+
+  test('should logout an authenticated user', async ({ client }) => {
+    const user = await User.create({
+      username: 'test_user4300',
+      email: 'testtestest@example.com',
+      password: 'some_password'
+    })
+    const response = await client.post('/auth/logout').withGuard('api').loginAs(user)
+
+    response.assertStatus(200)
+  })
+
+  test('should get current auth user', async ({ client }) => {
+    const user = await User.create({
+      username: 'test_user43001',
+      email: 'testtestest1@example.com',
+      password: 'some_password'
+    })
+    const response = await client.get('/auth/me').withGuard('api').loginAs(user)
 
     response.assertStatus(200)
   })

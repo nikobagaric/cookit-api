@@ -10,7 +10,6 @@ export default class extends BaseSchema {
       table.string('email', 254).notNullable().unique()
       table.string('password').notNullable()
       table.string('profile_picture').nullable()
-      table.integer('points', 64)
 
       table.timestamp('created_at').notNullable()
       table.timestamp('updated_at').nullable()

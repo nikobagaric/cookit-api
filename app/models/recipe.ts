@@ -4,6 +4,8 @@ import User from './user.js'
 import type { ManyToMany } from '@adonisjs/lucid/types/relations'
 
 export default class Recipe extends BaseModel {
+  serializeExtras = true
+
   @column({ isPrimary: true })
   declare id: number
 
@@ -24,12 +26,12 @@ export default class Recipe extends BaseModel {
   
   @column({ columnName: 'cooking_time' })
   declare cookingTime: number
+  
+  @column()
+  declare ingredients: string
 
   @column({ columnName: 'image_url' })
   declare imageUrl: string | null
-
-  @column()
-  declare ingredients: string
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

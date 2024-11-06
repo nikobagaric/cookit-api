@@ -31,8 +31,6 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column()
   declare email: string
 
-  // move points to user profile?
-
   @column()
   declare points: number | null
 
@@ -45,13 +43,14 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
   
-  // move relations to user profile?
-
+  
   @hasOne(() => UserProfile, {
     foreignKey: 'userId',
   })
   declare profile: HasOne<typeof UserProfile>
-
+  
+  // move relations to user profile?
+  
   @hasMany(() => ActivityLog)
   declare activityLogs: HasMany<typeof ActivityLog>
 
@@ -60,6 +59,22 @@ export default class User extends compose(BaseModel, AuthFinder) {
     pivotTimestamps: true
   })
   declare favoriteRecipes: ManyToMany<typeof Recipe>
+
+  @manyToMany(() => User, {
+    pivotTable: 'user_follows',
+    pivotTimestamps: true,
+    pivotForeignKey: 'follower_id',
+    pivotRelatedForeignKey: 'following_id'
+  })
+  declare followedUsers: ManyToMany<typeof User>
+
+  @manyToMany(() => User, {
+    pivotTable: 'user_follows',
+    pivotTimestamps: true,
+    pivotForeignKey: 'following_id',
+    pivotRelatedForeignKey: 'follower_id'
+  })
+  declare followers: ManyToMany<typeof User>
 
   static accessTokens = DbAccessTokensProvider.forModel(User)
 }
