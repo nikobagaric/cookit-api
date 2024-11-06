@@ -1,10 +1,10 @@
 import { test } from '@japa/runner'
 import ActivityLog from '#models/activity_log'
 import User from '#models/user'
-
 import fs from 'fs'
 import path from 'path'
 
+const sampleImage = fs.readFileSync(path.resolve('./tests/functional/image/sample-image.jpg'))
 
 test.group('ActivityLogsController', (group) => {
   let userId: number
@@ -50,15 +50,15 @@ test.group('ActivityLogsController', (group) => {
     assert.equal(response.body().action, 'User made a recipe')
   })
 
-  // test('should return 400 for invalid image file during create', async ({ client }) => {
-  //   const response = await client
-  //     .post('/activity_logs/activity_log')
-  //     .field('userId', userId)
-  //     .field('action', 'User with invalid image')
-  //     .file('image', 'fake-dir-2/invalid-text.txt') // Test invalid file
-  //   response.assertStatus(400)
-  //   response.assertBodyContains({ error: 'invalid image file' })
-  // })
+  test('should return 400 for invalid image file during create', async ({ client }) => {
+    const response = await client
+      .post('/activity_logs/activity_log')
+      .field('userId', userId)
+      .field('action', 'User with invalid image')
+      .file('image', './tests/functional/image/sample.txt') // Test invalid file
+    response.assertStatus(400)
+    response.assertBodyContains({ error: 'invalid image file' })
+  })
 
   test('should update an existing activity log', async ({ client, assert }) => {
     const activityLog = await ActivityLog.create({
@@ -72,16 +72,16 @@ test.group('ActivityLogsController', (group) => {
     assert.equal(response.body().action, 'User followed another user')
   })
 
-  // test('should update an existing activity log with image', async ({ client }) => {
-  //   const activityLog = await ActivityLog.create({
-  //     userId: userId,
-  //     action: 'User updated profile',
-  //   })
-  //   const response = await client
-  //     .put(`/activity_logs/activity_log/${activityLog.id}`)
-  //     .file('image', 'fake-dir-2/valid-image2.jpg')
-  //   response.assertStatus(200)
-  // })
+  test('should update an existing activity log with image', async ({ client }) => {
+    const activityLog = await ActivityLog.create({
+      userId: userId,
+      action: 'User updated profile',
+    })
+    const response = await client
+      .put(`/activity_logs/activity_log/${activityLog.id}`)
+      .file('image', sampleImage)
+    response.assertStatus(200)
+  })
 
   test('should return 404 for updating a non-existing activity log', async ({ client }) => {
     const response = await client.put('/activity_logs/activity_log/999999').form({

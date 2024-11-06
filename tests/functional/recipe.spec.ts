@@ -1,6 +1,5 @@
 import { test } from '@japa/runner'
 import Recipe from '#models/recipe'
-
 import fs from 'fs'
 import path from 'path'
 

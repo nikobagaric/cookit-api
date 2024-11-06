@@ -2,6 +2,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 import User from '#models/user'
 
 // make a user service, to be used in auth and here; for now this is ok
+// add a validator for requests
 export default class UsersController {
     
     /**
