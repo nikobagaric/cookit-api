@@ -11,10 +11,13 @@ export default class UserProfile extends BaseModel {
   declare userId: number
 
   @column()
-  declare imageUrl: string
+  declare imageUrl: string | null
 
   @column()
-  declare bio: string
+  declare bio: string | null
+
+  @column()
+  declare points: number
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

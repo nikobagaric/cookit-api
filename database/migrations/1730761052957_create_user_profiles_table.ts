@@ -7,7 +7,7 @@ export default class extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
       table.integer('user_id').notNullable().references('id').inTable('users').onDelete('CASCADE')
-      table.text('bio')
+      table.text('bio').nullable()
       table.integer('points', 64).defaultTo(0)
       table.string('image_url').nullable()
       table.timestamp('created_at')

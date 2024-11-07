@@ -12,6 +12,7 @@ const UsersController = () => import('#controllers/users_controller')
 const RecipesController = () => import('#controllers/recipes_controller')
 const ActivityLogsController = () => import('#controllers/activity_logs_controller')
 const UserProfilesController = () => import('#controllers/user_profiles_controller')
+const LeaderboardsController = () => import('#controllers/leaderboards_controller')
 
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
@@ -19,6 +20,7 @@ import { middleware } from './kernel.js'
 // Auto-swagger import:
 import AutoSwagger from 'adonis-autoswagger'
 import swagger from '#config/swagger'
+
 
 router.get('/swagger', async () => {
   return AutoSwagger.default.docs(router.toJSON(), swagger)
@@ -91,6 +93,10 @@ router
     router.delete('/user_profile/:id', [UserProfilesController, 'destroy'])
   })
   .prefix('user_profiles')
+
+router.group(() => {
+  router.get('/leaderboard', [LeaderboardsController, 'getFullLeaderboard'])
+})
 
 router.get('/', async () => {
   return { welcome: 'cookit api v.indev, go to /swagger or /docs' }
