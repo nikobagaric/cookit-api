@@ -96,7 +96,8 @@ router
 
 router.group(() => {
   router.get('/leaderboard', [LeaderboardsController, 'getFullLeaderboard'])
-})
+  router.put('/leaderboard/:id', [LeaderboardsController, 'updateOneUserPoints'])
+}).prefix('leaderboards')
 
 router.get('/', async () => {
   return { welcome: 'cookit api v.indev, go to /swagger or /docs' }

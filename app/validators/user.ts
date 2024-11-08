@@ -43,3 +43,9 @@ export const updateUserdataValidator = vine.compile(
      points: vine.number().nullable().optional()
     })
 )
+
+export const updatePointsValidator = vine.compile(
+  vine.object({
+    points: vine.number()
+  })
+)
