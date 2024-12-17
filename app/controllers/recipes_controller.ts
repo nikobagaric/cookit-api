@@ -3,6 +3,7 @@ import Recipe from '#models/recipe'
 import { v4 as uuid } from 'uuid'
 import app from '@adonisjs/core/services/app'
 import { storeRecipeRequestValidator, updateRecipeRequestValidator } from '#validators/recipe'
+import { tagSearch } from '#services/recipe_service'
 
 export default class RecipesController {
   /**
@@ -145,5 +146,18 @@ export default class RecipesController {
     await recipe.related('userFavorited').detach([user.id])
 
     return response.status(200).json({ status: 'unfavorited' })
+  }
+
+  /**
+   * @searchRecipe
+   * @operationId searchRecipe
+   * @description Searches a recipe by tags
+   * @responseBody 200 - <Recipe[]> - List of recipes
+   * @requestBody - {"input": "query-string"}
+   */
+  public async searchRecipe({ response, request }: HttpContext) {
+    const query = request.qs().query || ''
+    const recipes = await tagSearch(query)
+    return response.status(200).json(recipes)
   }
 }

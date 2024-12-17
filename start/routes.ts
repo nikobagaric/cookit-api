@@ -71,6 +71,7 @@ router
     router
       .post('/recipe/:id/unfavorite', [RecipesController, 'unfavoriteRecipe'])
       .use(middleware.auth())
+      router.get('/recipe/search', [RecipesController, 'searchRecipe'])
   })
   .prefix('recipes')
 

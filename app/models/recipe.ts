@@ -2,6 +2,7 @@ import { DateTime } from 'luxon'
 import { BaseModel, column, manyToMany } from '@adonisjs/lucid/orm'
 import User from './user.js'
 import type { ManyToMany } from '@adonisjs/lucid/types/relations'
+import Tag from './tag.js'
 
 export default class Recipe extends BaseModel {
   serializeExtras = true
@@ -44,4 +45,10 @@ export default class Recipe extends BaseModel {
     pivotTimestamps: true
   })
   declare userFavorited: ManyToMany<typeof User>
+
+  @manyToMany(() => Tag, {
+    pivotTable: 'recipe_tags',
+    pivotTimestamps: true
+  })
+  declare tags: ManyToMany<typeof Tag>
 }
