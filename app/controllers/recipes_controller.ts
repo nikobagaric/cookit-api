@@ -153,7 +153,7 @@ export default class RecipesController {
    * @operationId searchRecipe
    * @description Searches a recipe by tags
    * @responseBody 200 - <Recipe[]> - List of recipes
-   * @requestBody - {"input": "query-string"}
+   * @paramQuery q - Search term - @type(string) @required
    */
   public async searchRecipe({ response, request }: HttpContext) {
     const query = request.qs().query || ''

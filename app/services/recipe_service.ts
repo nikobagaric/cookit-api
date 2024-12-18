@@ -6,6 +6,10 @@ export async function tagSearch(query: string, splitBy: string = ' ') {
   const words = query.split(splitBy)
 
   const tags = await Tag.query().whereIn('name', words)
+  
+  if (tags.length === 0) {
+    return [];
+  }
 
   const tagIDs = tags.map((tag) => tag.id)
 
