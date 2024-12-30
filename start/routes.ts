@@ -21,7 +21,6 @@ import { middleware } from './kernel.js'
 import AutoSwagger from 'adonis-autoswagger'
 import swagger from '#config/swagger'
 
-
 router.get('/swagger', async () => {
   return AutoSwagger.default.docs(router.toJSON(), swagger)
 })
@@ -71,7 +70,7 @@ router
     router
       .post('/recipe/:id/unfavorite', [RecipesController, 'unfavoriteRecipe'])
       .use(middleware.auth())
-      router.get('/recipe/search', [RecipesController, 'searchRecipe'])
+    router.get('/search', [RecipesController, 'searchRecipe'])
   })
   .prefix('recipes')
 
@@ -95,10 +94,12 @@ router
   })
   .prefix('user_profiles')
 
-router.group(() => {
-  router.get('/leaderboard', [LeaderboardsController, 'getFullLeaderboard'])
-  router.put('/leaderboard/:id', [LeaderboardsController, 'updateOneUserPoints'])
-}).prefix('leaderboards')
+router
+  .group(() => {
+    router.get('/leaderboard', [LeaderboardsController, 'getFullLeaderboard'])
+    router.put('/leaderboard/:id', [LeaderboardsController, 'updateOneUserPoints'])
+  })
+  .prefix('leaderboards')
 
 router.get('/', async () => {
   return { welcome: 'cookit api v.indev, go to /swagger or /docs' }
