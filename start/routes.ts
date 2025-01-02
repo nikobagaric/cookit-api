@@ -1,9 +1,9 @@
 /*
 |--------------------------------------------------------------------------
-| Routes file
+| Routes File
 |--------------------------------------------------------------------------
 |
-| The routes file is used for defining the HTTP routes.
+| The routes file is used for defining the HTTP routes with clear naming conventions.
 |
 */
 
@@ -13,6 +13,7 @@ const RecipesController = () => import('#controllers/recipes_controller')
 const ActivityLogsController = () => import('#controllers/activity_logs_controller')
 const UserProfilesController = () => import('#controllers/user_profiles_controller')
 const LeaderboardsController = () => import('#controllers/leaderboards_controller')
+const TagsController = () => import('#controllers/tags_controller')
 
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
@@ -21,16 +22,11 @@ import { middleware } from './kernel.js'
 import AutoSwagger from 'adonis-autoswagger'
 import swagger from '#config/swagger'
 
-router.get('/swagger', async () => {
-  return AutoSwagger.default.docs(router.toJSON(), swagger)
-})
 
-router.get('/docs', async () => {
-  return AutoSwagger.default.ui('/swagger', swagger)
-})
+router.get('/swagger', async () => AutoSwagger.default.docs(router.toJSON(), swagger))
+router.get('/docs', async () => AutoSwagger.default.ui('/swagger', swagger))
 
-// bad naming scheme?
-
+// Auth routes
 router
   .group(() => {
     router.post('/register', [AuthController, 'register'])
@@ -40,67 +36,78 @@ router
   })
   .prefix('auth')
 
+// User routes
 router
   .group(() => {
-    router.get('/user', [UsersController, 'index'])
-    router.get('/user/:id', [UsersController, 'show'])
-    router.post('/user', [UsersController, 'store'])
-    router.put('/user/:id', [UsersController, 'update'])
-    router.delete('/user/:id', [UsersController, 'destroy'])
+    router.get('/', [UsersController, 'index'])
+    router.get('/:id', [UsersController, 'show'])
+    router.post('/', [UsersController, 'store'])
+    router.put('/:id', [UsersController, 'update'])
+    router.delete('/:id', [UsersController, 'destroy'])
 
-    router.get('/user/:id/favorite_recipes', [UsersController, 'getFavoriteRecipes'])
-    router.get('/user/:id/activity_logs', [UsersController, 'getActivityLogs'])
-
-    router.get('/user/:id/follows', [UsersController, 'getFollowers'])
-    router.post('/user/:id/follow', [UsersController, 'followUser']).use(middleware.auth())
-    router.post('/user/:id/unfollow', [UsersController, 'unfollowUser']).use(middleware.auth())
+    router.get('/:id/favorite-recipes', [UsersController, 'getFavoriteRecipes'])
+    router.get('/:id/activity-logs', [UsersController, 'getActivityLogs'])
+    router.get('/:id/follows', [UsersController, 'getFollowers'])
+    router.post('/:id/follow', [UsersController, 'followUser']).use(middleware.auth())
+    router.post('/:id/unfollow', [UsersController, 'unfollowUser']).use(middleware.auth())
   })
   .prefix('users')
 
+// Recipe routes
 router
   .group(() => {
-    router.get('/recipe', [RecipesController, 'index'])
-    router.get('/recipe/:id', [RecipesController, 'show'])
-    router.post('/recipe', [RecipesController, 'store'])
-    router.put('/recipe/:id', [RecipesController, 'update'])
-    router.delete('/recipe/:id', [RecipesController, 'destroy'])
-    router
-      .post('/recipe/:id/favorite', [RecipesController, 'favoriteRecipe'])
-      .use(middleware.auth())
-    router
-      .post('/recipe/:id/unfavorite', [RecipesController, 'unfavoriteRecipe'])
-      .use(middleware.auth())
+    router.get('/', [RecipesController, 'index'])
+    router.get('/:id', [RecipesController, 'show'])
+    router.post('/', [RecipesController, 'store'])
+    router.put('/:id', [RecipesController, 'update'])
+    router.delete('/:id', [RecipesController, 'destroy'])
+    router.post('/:id/favorite', [RecipesController, 'favoriteRecipe']).use(middleware.auth())
+    router.post('/:id/unfavorite', [RecipesController, 'unfavoriteRecipe']).use(middleware.auth())
     router.get('/search', [RecipesController, 'searchRecipe'])
   })
   .prefix('recipes')
 
+// Activity log routes
 router
   .group(() => {
-    router.get('/activity_log', [ActivityLogsController, 'index'])
-    router.get('/activity_log/:id', [ActivityLogsController, 'show'])
-    router.post('/activity_log', [ActivityLogsController, 'store'])
-    router.put('/activity_log/:id', [ActivityLogsController, 'update'])
-    router.delete('/activity_log/:id', [ActivityLogsController, 'destroy'])
+    router.get('/', [ActivityLogsController, 'index'])
+    router.get('/:id', [ActivityLogsController, 'show'])
+    router.post('/', [ActivityLogsController, 'store'])
+    router.put('/:id', [ActivityLogsController, 'update'])
+    router.delete('/:id', [ActivityLogsController, 'destroy'])
   })
-  .prefix('activity_logs')
+  .prefix('activity-logs')
 
+// User profile routes
 router
   .group(() => {
-    router.get('/user_profile', [UserProfilesController, 'index'])
-    router.get('/user_profile/:id', [UserProfilesController, 'show'])
-    router.post('/user_profile', [UserProfilesController, 'store'])
-    router.put('/user_profile/:id', [UserProfilesController, 'update'])
-    router.delete('/user_profile/:id', [UserProfilesController, 'destroy'])
+    router.get('/', [UserProfilesController, 'index'])
+    router.get('/:id', [UserProfilesController, 'show'])
+    router.post('/', [UserProfilesController, 'store'])
+    router.put('/:id', [UserProfilesController, 'update'])
+    router.delete('/:id', [UserProfilesController, 'destroy'])
   })
-  .prefix('user_profiles')
+  .prefix('user-profiles')
 
+// Leaderboard routes
 router
   .group(() => {
-    router.get('/leaderboard', [LeaderboardsController, 'getFullLeaderboard'])
-    router.put('/leaderboard/:id', [LeaderboardsController, 'updateOneUserPoints'])
+    router.get('/', [LeaderboardsController, 'getFullLeaderboard'])
+    router.put('/:id', [LeaderboardsController, 'updateOneUserPoints'])
   })
   .prefix('leaderboards')
 
+router
+  .group(() => {
+    router.get('/', [TagsController, 'index'])
+    router.get('/:id', [TagsController, 'show'])
+    router.post('/', [TagsController, 'store'])
+    router.put('/:id', [TagsController, 'update'])
+    router.delete('/:id', [TagsController, 'destroy'])
+  })
+  .prefix('tags')
+
+// Root route
 router.get('/', async () => {
-  return { welcome: 'cookit api v.indev, go to /swagger or /docs' }
+  return { welcome: 'cookit API v.indev. Visit /swagger or /docs for details.' }
 })
