@@ -18,9 +18,8 @@ test.group('ActivityLogsController', (group) => {
     userId = user.id
   })
 
-
   test('should get all activity logs', async ({ client, assert }) => {
-    const response = await client.get('/activity_logs/activity_log')
+    const response = await client.get('/activity-logs')
     response.assertStatus(200)
     assert.isArray(response.body())
   })
@@ -30,19 +29,19 @@ test.group('ActivityLogsController', (group) => {
       userId,
       action: 'User logged in',
     })
-    const response = await client.get(`/activity_logs/activity_log/${activityLog.id}`)
+    const response = await client.get(`/activity-logs/${activityLog.id}`)
     response.assertStatus(200)
     assert.equal(response.body().id, activityLog.id)
     assert.equal(response.body().action, 'User logged in')
   })
 
   test('should return 404 for a non-existing activity log id', async ({ client }) => {
-    const response = await client.get('/activity_logs/999999')
+    const response = await client.get('/activity-logs/999999')
     response.assertStatus(404)
   })
 
   test('should create a new activity log', async ({ client, assert }) => {
-    const response = await client.post('/activity_logs/activity_log').form({
+    const response = await client.post('/activity-logs').form({
       userId: userId,
       action: 'User made a recipe',
     })
@@ -52,7 +51,7 @@ test.group('ActivityLogsController', (group) => {
 
   test('should return 400 for invalid image file during create', async ({ client }) => {
     const response = await client
-      .post('/activity_logs/activity_log')
+      .post('/activity-logs')
       .field('userId', userId)
       .field('action', 'User with invalid image')
       .file('image', './tests/functional/image/sample.txt') // Test invalid file
@@ -65,7 +64,7 @@ test.group('ActivityLogsController', (group) => {
       userId: userId,
       action: 'User followed someone',
     })
-    const response = await client.put(`/activity_logs/activity_log/${activityLog.id}`).form({
+    const response = await client.put(`/activity-logs/${activityLog.id}`).form({
       action: 'User followed another user',
     })
     response.assertStatus(200)
@@ -78,13 +77,13 @@ test.group('ActivityLogsController', (group) => {
       action: 'User updated profile',
     })
     const response = await client
-      .put(`/activity_logs/activity_log/${activityLog.id}`)
+      .put(`/activity-logs/${activityLog.id}`)
       .file('image', sampleImage)
     response.assertStatus(200)
   })
 
   test('should return 404 for updating a non-existing activity log', async ({ client }) => {
-    const response = await client.put('/activity_logs/activity_log/999999').form({
+    const response = await client.put('/activity-logs/999999').form({
       action: 'Non-existing activity log',
     })
     response.assertStatus(404)
@@ -95,12 +94,12 @@ test.group('ActivityLogsController', (group) => {
       userId,
       action: 'User deleted an activity',
     })
-    const response = await client.delete(`/activity_logs/activity_log/${activityLog.id}`)
+    const response = await client.delete(`/activity-logs/${activityLog.id}`)
     response.assertStatus(204)
   })
 
   test('should return 404 for deleting a non-existing activity log', async ({ client }) => {
-    const response = await client.delete('/activity_logs/activity_log/999999')
+    const response = await client.delete('/activity-logs/999999')
     response.assertStatus(404)
   })
 })

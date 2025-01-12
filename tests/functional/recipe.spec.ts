@@ -22,13 +22,13 @@ test.group('RecipesController', (group) => {
   })
 
   test('should get all recipes', async ({ client, assert }) => {
-    const response = await client.get('/recipes/recipe')
+    const response = await client.get('/recipes')
     response.assertStatus(200)
     assert.isArray(response.body())
   })
 
   test('should get a single recipe by id', async ({ client, assert }) => {
-    const response = await client.get(`/recipes/recipe/${recipeId}`)
+    const response = await client.get(`/recipes/${recipeId}`)
     response.assertStatus(200)
     assert.equal(response.body().id, recipeId)
     assert.equal(response.body().title, 'Test Recipe')
@@ -40,7 +40,7 @@ test.group('RecipesController', (group) => {
   })
 
   test('should create a new recipe', async ({ client, assert }) => {
-    const response = await client.post('/recipes/recipe').form({
+    const response = await client.post('/recipes').form({
       title: 'New Recipe',
       description: 'A test recipe description',
       difficulty: 3,
@@ -70,7 +70,7 @@ test.group('RecipesController', (group) => {
   })
 
   test('should update an existing recipe', async ({ client, assert }) => {
-    const response = await client.put(`/recipes/recipe/${recipeId}`).form({
+    const response = await client.put(`/recipes/${recipeId}`).form({
       title: 'Updated Recipe',
       description: 'An updated recipe description',
       difficulty: 4,
@@ -81,14 +81,14 @@ test.group('RecipesController', (group) => {
 
   test('should update an existing recipe with image', async ({ client }) => {
     const response = await client
-      .put(`/recipes/recipe/${recipeId}`)
+      .put(`/recipes/${recipeId}`)
       .file('image', sampleImage)
 
     response.assertStatus(200)
   })
 
   test('should return 404 for updating a non-existing recipe', async ({ client }) => {
-    const response = await client.put('/recipes/recipe/999999').form({
+    const response = await client.put('/recipes/999999').form({
       title: 'Non-existing Recipe',
       description: 'Should fail',
       difficulty: 1,
@@ -97,12 +97,12 @@ test.group('RecipesController', (group) => {
   })
 
   test('should delete an existing recipe', async ({ client }) => {
-    const response = await client.delete(`/recipes/recipe/${recipeId}`)
+    const response = await client.delete(`/recipes/${recipeId}`)
     response.assertStatus(204)
   })
 
   test('should return 404 for deleting a non-existing recipe', async ({ client }) => {
-    const response = await client.delete('/recipes/recipe/999999')
+    const response = await client.delete('/recipes/999999')
     response.assertStatus(404)
   })
 })

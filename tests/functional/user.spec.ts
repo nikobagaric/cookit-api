@@ -14,24 +14,24 @@ test.group('UsersController', (group) => {
   })
 
   test('should get all users', async ({ client, assert }) => {
-    const response = await client.get('/users/user')
+    const response = await client.get('/users')
     response.assertStatus(200)
     assert.isArray(response.body())
   })
 
   test('should get a single user by id', async ({ client, assert }) => {
-    const response = await client.get(`/users/user/${userId}`)
+    const response = await client.get(`/users/${userId}`)
     response.assertStatus(200)
     assert.equal(response.body().id, userId)
   })
 
   test('should return 404 for a non-existing user id', async ({ client }) => {
-    const response = await client.get('/users/user/999999')
+    const response = await client.get('/users/999999')
     response.assertStatus(404)
   })
 
   test('should create a new user', async ({ client, assert }) => {
-    const response = await client.post('/users/user').json({
+    const response = await client.post('/users').json({
       username: 'newuser',
       email: 'newuser@example.com',
       password: 'password123',
@@ -41,7 +41,7 @@ test.group('UsersController', (group) => {
   })
 
   test('should update an existing user', async ({ client, assert }) => {
-    const response = await client.put(`/users/user/${userId}`).json({
+    const response = await client.put(`/users/${userId}`).json({
       username: 'updateduser',
     })
     response.assertStatus(200)
@@ -56,12 +56,12 @@ test.group('UsersController', (group) => {
   })
 
   test('should delete an existing user', async ({ client }) => {
-    const response = await client.delete(`/users/user/${userId}`)
+    const response = await client.delete(`/users/${userId}`)
     response.assertStatus(204)
   })
 
   test('should return 404 for deleting a non-existing user', async ({ client }) => {
-    const response = await client.delete('/users/user/999999')
+    const response = await client.delete('/users/999999')
     response.assertStatus(404)
   })
 })
