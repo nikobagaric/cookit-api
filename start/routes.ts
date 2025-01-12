@@ -14,6 +14,7 @@ const ActivityLogsController = () => import('#controllers/activity_logs_controll
 const UserProfilesController = () => import('#controllers/user_profiles_controller')
 const LeaderboardsController = () => import('#controllers/leaderboards_controller')
 const TagsController = () => import('#controllers/tags_controller')
+const RecipeStepsController = () => import('#controllers/recipe_steps_controller')
 
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
@@ -21,7 +22,6 @@ import { middleware } from './kernel.js'
 // Auto-swagger import:
 import AutoSwagger from 'adonis-autoswagger'
 import swagger from '#config/swagger'
-
 
 router.get('/swagger', async () => AutoSwagger.default.docs(router.toJSON(), swagger))
 router.get('/docs', async () => AutoSwagger.default.ui('/swagger', swagger))
@@ -97,6 +97,7 @@ router
   })
   .prefix('leaderboards')
 
+// Tag routes
 router
   .group(() => {
     router.get('/', [TagsController, 'index'])
@@ -106,6 +107,17 @@ router
     router.delete('/:id', [TagsController, 'destroy'])
   })
   .prefix('tags')
+
+// Recipe step routes
+router
+  .group(() => {
+    router.get('/', [RecipeStepsController, 'index'])
+    router.get('/:id', [RecipeStepsController, 'show'])
+    router.post('/', [RecipeStepsController, 'store'])
+    router.put('/:id', [RecipeStepsController, 'update'])
+    router.delete('/:id', [RecipeStepsController, 'destroy'])
+  })
+  .prefix('recipe-steps')
 
 // Root route
 router.get('/', async () => {

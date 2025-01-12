@@ -1,8 +1,9 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, manyToMany } from '@adonisjs/lucid/orm'
+import { BaseModel, column, manyToMany, hasMany } from '@adonisjs/lucid/orm'
 import User from './user.js'
-import type { ManyToMany } from '@adonisjs/lucid/types/relations'
+import type { ManyToMany, HasMany } from '@adonisjs/lucid/types/relations'
 import Tag from './tag.js'
+import RecipeStep from './recipe_step.js'
 
 export default class Recipe extends BaseModel {
   serializeExtras = true
@@ -51,4 +52,7 @@ export default class Recipe extends BaseModel {
     pivotTimestamps: true
   })
   declare tags: ManyToMany<typeof Tag>
+
+  @hasMany(() => RecipeStep)
+  declare steps: HasMany<typeof RecipeStep>
 }

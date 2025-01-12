@@ -24,7 +24,7 @@
     cd cookit-api
     ```
 
-6. Copy the `.env.example` file to `.env` and configure your environment variables:
+6. Copy the  file to  and configure your environment variables:
     ```bash
     cp .env.example .env
     ```
@@ -105,6 +105,17 @@ Everything related to RECIPES.
 - **DELETE** `/recipes/recipe/{id}` - Delete a recipe (destroy)
 - **POST** `/recipes/recipe/{id}/favorite` - Favorite a recipe
 - **POST** `/recipes/recipe/{id}/unfavorite` - Unfavorite a recipe
+
+---
+
+### RECIPE_STEPS
+Everything related to RECIPE_STEPS.
+
+- **GET** `/recipe-steps/recipe_step` - Get a list of recipe steps (index)
+- **POST** `/recipe-steps/recipe_step` - Create a new recipe step (store)
+- **GET** `/recipe-steps/recipe_step/{id}` - Get a single recipe step (show)
+- **PUT** `/recipe-steps/recipe_step/{id}` - Update a recipe step (update)
+- **DELETE** `/recipe-steps/recipe_step/{id}` - Delete a recipe step (destroy)
 
 ---
 

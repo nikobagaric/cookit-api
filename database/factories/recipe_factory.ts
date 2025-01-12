@@ -2,6 +2,7 @@ import factory from '@adonisjs/lucid/factories'
 import Recipe from '#models/recipe'
 import { UserFactory } from './user_factory.js'
 import { TagFactory } from './tag_factory.js'
+import { RecipeStepFactory } from './recipe_step_factory.js'
 
 export const RecipeFactory = factory
   .define(Recipe, async ({ faker }) => {
@@ -17,4 +18,5 @@ export const RecipeFactory = factory
   })
   .relation('tags', () => TagFactory)
   .relation('userFavorited', () => UserFactory)
+  .relation('steps', () => RecipeStepFactory)
   .build()
