@@ -15,7 +15,7 @@ test.group('Leaderboard', () => {
       bio: "testing bio",
     })
     await client.put(`/leaderboards/${userProfile.id}`).field('points', 200)
-    const response = await client.get('/leaderboards/leaderboard')
+    const response = await client.get('/leaderboards')
 
     response.assertStatus(200)
     response.assertBodyContains([{

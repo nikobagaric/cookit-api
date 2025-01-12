@@ -55,7 +55,7 @@ test.group('RecipesController', (group) => {
 
   test('should return 400 for invalid image file during create', async ({ client }) => {
     const response = await client
-      .post('/recipes/recipe')
+      .post('/recipes')
       .field('title', 'Invalid Image Recipe')
       .field('description', 'Description with invalid image')
       .field('difficulty', 2)
